@@ -99,17 +99,19 @@ if(count($data->printers) > 0){
                         $print->text("Kasir    : ".substr($data->receipt->cashier->name,0,$max_width - 11)."\n");
 
                         $max_qty = 4;
-                        $space_between_qty_item = 1;
-                        $max_item = $max_width - $max_qty - $space_between_qty_item;
+                        $space_between_qty_unit = 1;
+                        $space_between_unit_item = 1;
+                        $max_unit = 4;
+                        $max_item = $max_width - $max_qty - $max_unit - $space_between_qty_unit - $space_between_unit_item;
                         $max_price = 10;
                         $max_sub_total = 10;
                         $print -> setJustification(Printer::JUSTIFY_LEFT);
                         
                         $print -> text(str_repeat('-', $max_width)."\n");
                         if($printer->printer_paper_size == "80mm"){
-                            $print -> text(" Qty ".str_repeat(' ',$space_between_qty_item)."Item".str_repeat(' ',11)."Price".str_repeat(' ',12)."Sub Total\n");
+                            $print -> text(" Qty".str_repeat(' ',$space_between_qty_unit)."Unit".str_repeat(' ',$space_between_unit_item)."Item".str_repeat(' ',8)."Price".str_repeat(' ',11)."Sub Total\n");
                         } else if($printer->printer_paper_size == "58mm"){
-                            $print -> text(" Qty ".str_repeat(' ',$space_between_qty_item)."Item".str_repeat(' ',3)."Price".str_repeat(' ',4)."Sub Total\n");
+                            $print -> text(" Qty".str_repeat(' ',$space_between_qty_unit)."Unit".str_repeat(' ',$space_between_unit_item)."Item".str_repeat(' ',1)."Price".str_repeat(' ',2)."Sub Total\n");
                         }
                         $print -> text(str_repeat('-', $max_width)."\n");
 
@@ -117,18 +119,19 @@ if(count($data->printers) > 0){
                         $no = 0;
                         foreach($data->carts as $cart){
                             $no++;
-                                $item = substr(ucwords(strtolower($cart->product->name)),0,$max_width - $max_qty - $space_between_qty_item);#12
+                                $item = substr(ucwords(strtolower($cart->product->name)),0,$max_width - $max_qty - $space_between_qty_unit);#12
                                 $qty = $cart->qty;#1
+                                $unit = ($cart->product->unit) ? substr($cart->product->unit,0,4): '';#1
                                 $note = $cart->note;
-                                $price = uang((int) $cart->price_after_disc);#6
-                                $sub_total = uang($cart->qty * (int)$cart->price_after_disc);#6
-                                $space_before_note= 6;
-                                $space_before_price = 16;
-                                $space_between_price_sub_total = 12;
-                                if($printer->printer_paper_size == "58mm") {  $space_before_price = 8; $space_between_price_sub_total = 4;}
+                                $price = uang((int) $cart->price_final);#6
+                                $sub_total = uang($cart->qty * (int)$cart->price_final);#6
+                                $space_before_note= 9;
+                                $space_before_price = 19;
+                                $space_between_price_sub_total = 9;
+                                if($printer->printer_paper_size == "58mm") {  $space_before_price = 5; $space_between_price_sub_total = 1;}
                                 
                                 $print -> setJustification(Printer::JUSTIFY_LEFT);
-                                $print -> text(str_repeat(' ',$max_qty - strlen($qty)).$qty.str_repeat(' ',$space_between_qty_item).$item."\n");
+                                $print -> text(str_repeat(' ',$max_qty - strlen($qty)).$qty.str_repeat(' ',$max_unit - strlen($unit)).$unit.str_repeat(' ',$space_between_unit_item).$item."\n");
                                 if($note){
                                     $print -> text(str_repeat(' ',$space_before_note)."*".$note."\n");
                                 }
@@ -221,13 +224,15 @@ if(count($data->printers) > 0){
                         $print->text("Kasir    : ".substr($data->receipt->cashier->name,0,$max_width - 11)."\n");
 
                         $max_qty = 4;
-                        $space_between_qty_item = 1;
-                        $space_before_note = 6;
-                        $max_item = $max_width - $max_qty - $space_between_qty_item;
+                        $max_unit = 4;
+                        $space_between_qty_unit = 1;
+                        $space_between_unit_item = 1;
+                        $space_before_note = 9;
+                        $max_item = $max_width - $max_qty - $max_unit - $space_between_qty_item;
                         $print -> setJustification(Printer::JUSTIFY_LEFT);
 
                         $print -> text(str_repeat('-', $max_width)."\n");
-                        $print -> text(" Qty ".str_repeat(' ',$space_between_qty_item)."Item\n");
+                        $print -> text(" Qty".str_repeat(' ',$space_between_qty_unit)."Unit".str_repeat(' ',$space_between_unit_item)."Item\n");
                         $print -> text(str_repeat('-', $max_width)."\n");
 
                         #CARTS
@@ -237,10 +242,11 @@ if(count($data->printers) > 0){
                             $no++;
                                 $item = substr(ucwords(strtolower($cart->product->name)),0,$max_width - $max_qty - $space_between_qty_item);#12
                                 $qty = $cart->qty;#1
+                                $unit = ($cart->product->unit) ? substr($cart->product->unit,0,4): '';#1
                                 $note = $cart->note;
                                 
                                 $print -> setJustification(Printer::JUSTIFY_LEFT);
-                                $print -> text(str_repeat(' ',$max_qty - strlen($qty)).$qty.str_repeat(' ',$space_between_qty_item).$item."\n");
+                                $print -> text(str_repeat(' ',$max_qty - strlen($qty)).$qty.str_repeat(' ',$max_unit - strlen($unit)).$unit.str_repeat(' ',$space_between_unit_item).$item."\n");
                                 if($note){
                                     $print -> text(str_repeat(' ',$space_before_note)."*".$note."\n");
                                 }

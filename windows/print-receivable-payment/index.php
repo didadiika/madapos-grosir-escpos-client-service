@@ -56,7 +56,7 @@ if(count($data->printers) > 0){
     }
     #----------Setting Paper-----------#
 
-        $connector = ($printer->printer_conn == 'USB') ? new WindowsPrintConnector($printer->printer_usb_name) : new NetworkPrintConnector($printer->printer_ip_address) ;
+        $connector = ($printer->printer_conn == 'USB') ? new WindowsPrintConnector($printer->printer_address) : new NetworkPrintConnector($printer->printer_address) ;
         if($connector){ #If Connector
             $print = new Printer($connector);#Open Koneksi Printer
             if(count($printer->jobs) > 0){
