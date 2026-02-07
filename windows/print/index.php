@@ -101,7 +101,7 @@ if(count($data->printers) > 0){
                         $max_qty = 4;
                         $space_between_qty_unit = 1;
                         $space_between_unit_item = 1;
-                        $max_unit = 4;
+                        $max_unit = 5;
                         $max_item = $max_width - $max_qty - $max_unit - $space_between_qty_unit - $space_between_unit_item;
                         $max_price = 10;
                         $max_sub_total = 10;
@@ -224,7 +224,7 @@ if(count($data->printers) > 0){
                         $print->text("Kasir    : ".substr($data->receipt->cashier->name,0,$max_width - 11)."\n");
 
                         $max_qty = 4;
-                        $max_unit = 4;
+                        $max_unit = 5;
                         $space_between_qty_unit = 1;
                         $space_between_unit_item = 1;
                         $space_before_note = 9;
